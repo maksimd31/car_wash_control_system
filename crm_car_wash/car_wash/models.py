@@ -33,9 +33,9 @@ class Order(models.Model):
     """
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    work_type = models.CharField(max_length=100)
+    work_types = models.ManyToManyField('Вид работы')
+    employees = models.ManyToManyField('Сотрудник выполнивший работу')
     cost = models.DecimalField(max_digits=8, decimal_places=2)
-    employee = models.CharField(max_length=100)
     comment = models.TextField()
 
     def __str__(self):
@@ -62,3 +62,39 @@ class Employee(models.Model):
     def __str__(self):
         return f'{self.name} {self.position} {self.hire_date} {self.phone_number} {self.residence_address}' \
                f'{self.registration_address}'
+
+
+class WorkType(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+'''
+Примечания:
+- В модели Order я использовал work_types и employees как поля типа ManyToManyField, чтобы иметь возможность 
+добавлять несколько видов работ и сотрудников к одному заказу. Эти поля связаны с моделями WorkType и 
+Employee соответственно.
+- Модель WorkType представляет собой отдельную таблицу, которая содержит виды работ. 
+- нужно добавить дополнительные поля (например, описание, ставка за работу и т. д.).
+- после внесения изменений в модели, вам необходимо выполнить миграцию 
+(python manage.py makemigrations и python manage.py migrate), чтобы изменения отразились в базе данных.
+'''
+
+
+
+
+'''
+Примечания:
+- В модели Client я использовал license_plate в качестве первичного ключа (primary key), так как 
+он является государственным номером. 
+- В модели Order я использовал внешний ключ (foreign key) client, связывающий заказ с клиентом. 
+Нужно будет учесть, что делать, если клиент удаляется из базы данных, чтобы не возникало 
+неконсистентных данных. В данном примере, я установил параметр on_delete=models.CASCADE, чтобы удалить 
+все заказы связанные с удаленным клиентом. 
+
+- В cost модели Order я использовал поле с фиксированной точностью с восемью цифрами и 
+двумя знаками после запятой (8, 2). 
+- После внесения изменений в модели, вам необходимо выполнить миграцию 
+(python manage.py makemigrations и python manage.py migrate), чтобы изменения отразились в базе данных.
+'''
