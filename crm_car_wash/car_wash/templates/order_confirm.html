@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Подтверждение заказа{% endblock %}
+
+{% block heading %}Подтверждение заказа{% endblock %}
+
+{% block content %}
+    <h2>Клиент: {{ client.name }}</h2>
+    <h3>Номер автомобиля: {{ client.car_number }}</h3>
+    <h3>Предыдущие заказы:</h3>
+    <ul>
+        {% for order in orders %}
+        <li>{{ order.wash_type }}, {{ order.car_class }}, {{ order.vacuum }}</li>
+        {% endfor %}
+    </ul>
+    <form method="POST" action="{% url 'calculate_price' %}">
+        {% csrf_token %}
+        <input type="hidden" id="car_number" name="car_number" value="{{ client.car_number }}">
+        <label for="wash_type">Тип мойки:</label>
+        <select id="wash_type" name="wash_type" required>
+            <option value="body_carpet">Кузов и коврики</option>
+            <option value="complex">Комплексная</option>
+            <option value="standard">Стандартная</option>
+        </select><br><br>
+        <label for="car_class">Класс автомобиля:</label>
+        <select id="car_class" name="car_class" required>
+            <option value="1">Класс 1</option>
+            <option value="2">Класс 2</option>
+            <option value="3">Класс 3</option>
+        </select><br><br>
+        <label for="vacuum">Пылесос:</label>
+        <input type="radio" id="interior" name="vacuum" value="interior" required>
+        <label for="interior">Салон</label>
+        <input type="radio" id="trunk" name="vacuum" value="trunk" required>
+        <label for="trunk">Багажник</label>
+        <input type="radio" id="both" name="vacuum" value="both" required>
+        <label for="both">Салон и багажник</label><br><br>
+        <label for="additional_services">Дополнительные услуги:</label><br>
+        <input type="checkbox" id="service1" name="additional_services" value="1">
+        <label for="service1">Дополнительная услуга 1</label><br>
+        <input type="checkbox" id="service2" name="additional_services" value="2">
+        <label for="service2">Дополнительная услуга 2</label><br>
+        <input type="checkbox" id="service3" name="additional_services" value="3">
+        <label for="service3">Дополнительная услуга 3</label><br><br>
+        <label for="employee">Выберите сотрудника:</label>
+        <select id="employee" name="employee" required>
+            {% for employee in employees %}
+            <option value="{{ employee.id }}">{{ employee.name }}</option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" value="Рассчитать стоимость">
+    </form>
+{% endblock %}

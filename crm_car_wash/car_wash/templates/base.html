@@ -1,0 +1,38 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>{% block title %}Заголовок страницы{% endblock %}</title>-->
+<!--    <link rel="stylesheet" href="путь_к_файлу_с_стилями.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--    <header>-->
+<!--        <nav>-->
+<!--            &lt;!&ndash; Навигационное меню &ndash;&gt;-->
+<!--        </nav>-->
+<!--    </header>-->
+
+<!--    <main>-->
+<!--        {% block content %}-->
+<!--        &lt;!&ndash; Основное содержимое страницы &ndash;&gt;-->
+<!--        {% endblock %}-->
+<!--    </main>-->
+
+<!--    <footer>-->
+<!--        &lt;!&ndash; Футер страницы &ndash;&gt;-->
+<!--    </footer>-->
+
+<!--    <script src="путь_к_файлу_с_скриптами.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <h1>{% block heading %}{% endblock %}</h1>
+    {% block content %}{% endblock %}
+</body>
+</html>

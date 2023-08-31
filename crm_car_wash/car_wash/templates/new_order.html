@@ -1,0 +1,25 @@
+<!--{% extends 'base.html' %}-->
+
+<!--{% block content %}-->
+<!--<form method="POST" action="{% url 'new_order' %}">-->
+<!--    {% csrf_token %}-->
+<!--    <input type="text" name="license_plate" placeholder="Государственный номер автомобиля" required>-->
+<!--    <button type="submit">Подтвердить</button>-->
+<!--</form>-->
+
+<!--{% endblock %}-->
+
+{% extends 'base.html' %}
+
+{% block title %}Новый заказ{% endblock %}
+
+{% block heading %}Новый заказ{% endblock %}
+
+{% block content %}
+    <form method="POST" action="{% url 'calculate_price' %}">
+        {% csrf_token %}
+        <label for="car_number">Номер автомобиля:</label>
+        <input type="text" id="car_number" name="car_number" required><br><br>
+        <input type="submit" value="Подтвердить">
+    </form>
+{% endblock %}

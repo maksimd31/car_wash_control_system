@@ -33,8 +33,8 @@ class Order(models.Model):
     """
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    work_types = models.ManyToManyField('Вид работы')
-    employees = models.ManyToManyField('Сотрудник выполнивший работу')
+    work_types = models.ManyToManyField('WorkType')
+    employees = models.ManyToManyField('Employee')
     cost = models.DecimalField(max_digits=8, decimal_places=2)
     comment = models.TextField()
 
@@ -70,6 +70,12 @@ class WorkType(models.Model):
     def __str__(self):
         return self.name
 
+
+class Salary(models.Model):
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+    salary_amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+
 '''
 Примечания:
 - В модели Order я использовал work_types и employees как поля типа ManyToManyField, чтобы иметь возможность 
@@ -80,9 +86,6 @@ Employee соответственно.
 - после внесения изменений в модели, вам необходимо выполнить миграцию 
 (python manage.py makemigrations и python manage.py migrate), чтобы изменения отразились в базе данных.
 '''
-
-
-
 
 '''
 Примечания:
@@ -97,4 +100,11 @@ Employee соответственно.
 двумя знаками после запятой (8, 2). 
 - После внесения изменений в модели, вам необходимо выполнить миграцию 
 (python manage.py makemigrations и python manage.py migrate), чтобы изменения отразились в базе данных.
+'''
+
+'''
+В этом примере у модели Salary есть поле employee, которое устанавливает связь один к одному с моделью Employee. 
+То есть каждая запись в модели Salary будет иметь только одну связанную запись в модели Employee.
+Также есть поле salary_amount, которое хранит значение заработной платы для данного сотрудника.
+нужно выполнить миграцию после создания моделей с помощью команды  python manage.py makemigrations и python manage.py migrate для применения изменений в базе данных.
 '''
