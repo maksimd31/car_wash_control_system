@@ -1,0 +1,21 @@
+<!-- new_client.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Client</title>
+</head>
+<body>
+    <h1>New Client</h1>
+
+    <form method="post" action="{% url 'new_client' %}">
+        {% csrf_token %}
+
+        <label for="license_plate">License Plate:</label>
+        <input type="text" name="license_plate">
+        <br>
+
+        <input type="submit" value="Continue">
+    </form>
+</body>
+</html>

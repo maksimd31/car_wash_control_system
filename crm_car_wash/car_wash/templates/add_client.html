@@ -1,15 +1,21 @@
-{% extends 'base.html' %}
+<!-- add_client.html -->
 
-{% block title %}Добавить клиента{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Client</title>
+</head>
+<body>
+    <h1>Add Client</h1>
 
-{% block heading %}Добавить клиента{% endblock %}
-
-{% block content %}
-    <form method="POST" action="{% url 'add_client' %}">
+    <form method="post" action="{% url 'add_client' %}">
         {% csrf_token %}
-        <input type="hidden" id="car_number" name="car_number" value="{{ car_number }}">
-        <label for="name">Имя клиента:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <input type="submit" value="Добавить клиента">
+
+        <label for="name">Name:</label>
+        <input type="text" name="name">
+        <br>
+
+        <input type="submit" value="Add Client">
     </form>
-{% endblock %}
+</body>
+</html>

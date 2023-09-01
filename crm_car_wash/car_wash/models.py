@@ -22,25 +22,34 @@ class Client(models.Model):
         return f'{self.name} {self.license_plate} {self.phone_number} {self.car_model}'
 
 
-class Order(models.Model):
-    """
-    client - клиент
-    created_at - дата проведения услуги
-    work_type - Выполненные работы
-    cost - стоимость
-    employee - работник выполнивший работу
-    comment - комментарий
-    """
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    work_types = models.ManyToManyField('WorkType')
-    employees = models.ManyToManyField('Employee')
-    cost = models.DecimalField(max_digits=8, decimal_places=2)
-    comment = models.TextField()
+# class Order(models.Model):
+#     """
+#     client - клиент
+#     created_at - дата проведения услуги
+#     work_type - Выполненные работы
+#     cost - стоимость
+#     employee - работник выполнивший работу
+#     comment - комментарий
+#     """
+#     client = models.ForeignKey(Client, on_delete=models.CASCADE)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     work_types = models.ManyToManyField('WorkType')
+#     employees = models.ManyToManyField('Employee')
+#     cost = models.DecimalField(max_digits=8, decimal_places=2)
+#     comment = models.TextField()
+#
+#     def __str__(self):
+#         return f"Order for {self.client.name} {self.created_at} {self.work_type} {self.cost} {self.employee} " \
+#                f"{self.comment}"
 
-    def __str__(self):
-        return f"Order for {self.client.name} {self.created_at} {self.work_type} {self.cost} {self.employee} " \
-               f"{self.comment}"
+class Order(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    wash_type = models.CharField(max_length=100,default="")
+    car_class = models.CharField(max_length=100, default='1')
+    vacuum = models.CharField(max_length=100,default="")
+    additional_services = models.ManyToManyField('AdditionalService')
+    employee = models.ForeignKey('Employee', on_delete=models.CASCADE,default="")
+    total_price = models.DecimalField(max_digits=100, decimal_places=2)
 
 
 class Employee(models.Model):
@@ -64,16 +73,21 @@ class Employee(models.Model):
                f'{self.registration_address}'
 
 
-class WorkType(models.Model):
+# class WorkType(models.Model):
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
+#
+#
+# class Salary(models.Model):
+#     employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+#     salary_amount = models.DecimalField(max_digits=10, decimal_places=2)
+#
+
+class AdditionalService(models.Model):
     name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
-class Salary(models.Model):
-    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
-    salary_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=100, decimal_places=2)
 
 
 '''

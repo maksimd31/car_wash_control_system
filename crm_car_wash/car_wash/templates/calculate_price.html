@@ -1,0 +1,58 @@
+<!-- calculate_price.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculate Price</title>
+</head>
+<body>
+    <h1>Calculate Price</h1>
+    <h2>Client: {{ client.name }}</h2>
+
+    <form method="post" action="{% url 'calculate_price' client_id=client.id %}">
+        {% csrf_token %}
+
+        <label for="wash_type">Wash Type:</label>
+        <select name="wash_type">
+            {% for key, value in wash_types.items %}
+                <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <label for="car_class">Car Class:</label>
+        <select name="car_class">
+            {% for key, value in car_classes.items %}
+                <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <label for="vacuum">Vacuum Type:</label>
+        <select name="vacuum">
+            {% for key, value in vacuum_types.items %}
+                <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <label for="additional_services">Additional Services:</label>
+        <select name="additional_services" multiple>
+            {% for additional_service in additional_services %}
+                <option value="{{ additional_service.id }}">{{ additional_service.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <label for="employee">Employee:</label>
+        <select name="employee">
+            {% for employee in employees %}
+                <option value="{{ employee.id }}">{{ employee.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <input type="submit" value="Calculate">
+    </form>
+</body>
+</html>
