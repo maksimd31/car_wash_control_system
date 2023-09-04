@@ -1,34 +1,139 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Client
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Client, Order
+from .forms import ClientForm, ClientUpdateForm, OrderForm
 
-def create_new_client(request):
+
+# CLIENT
+def add_client(request):
+    """
+    Создание клиента
+    :param request: ответ на запрос GET
+    :return: render 'add_client.html'
+    """
+    if request.method == 'POST':
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('client_list')  # Перенаправление на страницу со списком клиентов
+    else:
+        form = ClientForm()
+
+    context = {'form': form}
+    return render(request, 'add_client.html', context)
+
+
+def delete_client(request):
+    """
+    Удаление пользователей
+    :param request: ответ на запрос GET
+    :return: render(request, 'delete_client.html')
+    """
     if request.method == 'POST':
         license_plate = request.POST.get('license_plate')
-        client = get_object_or_404(Client, license_plate=license_plate)
+        try:
+            client = Client.objects.get(license_plate=license_plate)
+            client.delete()
+            return redirect('client_list')
+        except Client.DoesNotExist:
+            error_message = 'Клиент с указанным государственным номером не найден.'
+            return render(request, 'delete_client.html', {'error_message': error_message})
 
-        if client:
-            # Клиент уже существует, добавляем данные
-            client.full_name = request.POST.get('full_name')
-            client.phone_number = request.POST.get('phone_number')
-            client.car_model = request.POST.get('car_model')
-            client.save()
-            message = f"Данные клиента {client.full_name} обновлены успешно!"
-        else:
-            # Создаем нового клиента
-            full_name = request.POST.get('full_name')
-            phone_number = request.POST.get('phone_number')
-            car_model = request.POST.get('car_model')
-            new_client = Client(license_plate=license_plate, full_name=full_name, phone_number=phone_number, car_model=car_model)
-            new_client.save()
-            message = f"Новый клиент {new_client.full_name} успешно создан!"
+    return render(request, 'delete_client.html')
 
-        return render(request, 'result.html', {'message': message})
+
+def update_client(request, license_plate):
+    """
+    Редактирование Пользователей
+    :param request: ответ на запрос GET
+    :param license_plate:
+    :return: render(request, 'update_client.html'
+    """
+    client = get_object_or_404(Client, license_plate=license_plate)
+
+    if request.method == 'POST':
+        form = ClientUpdateForm(request.POST, instance=client)
+        if form.is_valid():
+            form.save()
+            return redirect('client_detail', license_plate=license_plate)
     else:
-        return render(request, 'create_new_client.html')
-#
-# В этой функции, при отправке POST запроса, мы получаем государственный номер (license_plate) из формы отправки. Затем мы пытаемся найти клиента по государственному номеру с помощью функции get_object_or_404. Если клиент уже существует, мы обновляем его данные. Если клиента нет в базе данных, мы создаем нового клиента и сохраняем его.
-# После создания или обновления клиента, функция возвращает шаблон result.html с сообщением об успешном выполнении операции.
-# Вы можете создать два шаблона: create_new_client.html, который содержит форму для ввода государственного номера, и result.html, который отображает сообщение о результате операции.
-# Обратите внимание, что в этом примере я предполагаю, что у вас уже есть необходимая конфигурация проекта Django и настройки маршрутизации для этих функций.
+        form = ClientUpdateForm(instance=client)
+
+    return render(request, 'update_client.html', {'form': form, 'client': client})
 
 
+# ORDER
+def create_order(request):
+    """
+    Создание заказа, сделки
+    :param request: ответ на запрос GET
+    :return: return render(request, 'create_order.html'
+    """
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('order_list')
+    else:
+        form = OrderForm()
+    return render(request, 'create_order.html', {'form': form})
+
+
+def delete_order(request, order_id):
+    """
+    Удаление заказа/сделки
+    :param request: ответ на запрос GET
+    :param order_id: идентификатор заказа/сделки
+    :return: render(request, 'delete_order.html'
+    """
+    order = get_object_or_404(Order, pk=order_id)
+    # Здесь мы используем функцию get_object_or_404,
+    # чтобы получить объект модели Order по его первичному ключу (pk).
+    # Если заказ с указанным order_id не существует, будет сгенерирована страница ошибки HTTP 404.
+    if request.method == 'POST':
+        order.delete()
+        return redirect('order_list')
+    #     Здесь мы проверяем, был ли отправлен POST-запрос.
+    #     Если это так, то мы удаляем заказ, вызывая метод delete() для объекта order.
+    #     Затем мы перенаправляем пользователя на страницу, которая отображает список заказов
+    #     (в данном случае с именем order_list).
+
+    return render(request, 'delete_order.html', {'order': order})
+
+
+def update_order(request, order_id):
+    """
+    Редактирование заказа/сделки
+    :param request: ответ на запрос GET
+    :param order_id: идентификатор заказа/сделки
+    :return: render(request, 'update_order.html'
+    """
+    order = get_object_or_404(Order, pk=order_id)
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('order_list')
+    else:
+        form = OrderForm(instance=order)
+
+    return render(request, 'update_order.html', {'form': form, 'order': order})
+
+
+def order_list(request):
+    """
+    отображает список заказов (в данном случае с именем order_list).
+    :param request:
+    :return:  render(request, 'order_list.html'
+    """
+    orders = Order.objects.all()
+    return render(request, 'order_list.html', {'orders': orders})
+"""
+Здесь мы определяем функции для каждой операции: create_order, delete_order, update_order и order_list.
+- create_order: Создает новый заказ. Если запрос методом POST, то создается экземпляр формы (OrderForm) с данными из запроса и, если форма действительна, то сохраняется новый заказ в базу данных и происходит перенаправление на страницу списка заказов.
+- delete_order: Удаляет существующий заказ. Если запрос методом POST, то заказ удаляется из базы данных и происходит перенаправление на страницу списка заказов.
+- update_order: Редактирует существующий заказ. Если запрос методом POST, то создается экземпляр формы (OrderForm) с данными из запроса и, если форма действительна, то сохраняются изменения заказа в базе данных и происходит перенаправление на страницу списка заказов.
+- order_list: Отображает список всех заказов.
+Наконец, нужно создать соответствующие HTML-шаблоны для каждой из этих функций: create_order.html, delete_order.html, update_order.html и order_list.html, чтобы отображать формы и список заказов.
+Также понадобится обновить файл urls.py, чтобы добавить соответствующие маршруты для этих функций.
+"""
