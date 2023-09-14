@@ -22,3 +22,5 @@ class Command(BaseCommand):
 
             client.save()
             self.stdout.write(self.style.SUCCESS(f'Данные клиента {client.full_name} изменены: {random_field}'))
+
+

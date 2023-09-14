@@ -5,6 +5,7 @@ from .forms import ClientForm, ClientUpdateForm, OrderForm
 
 
 # CLIENT
+# filename views.py
 def add_client(request):
     """
     Создание клиента
@@ -23,6 +24,7 @@ def add_client(request):
     return render(request, 'add_client.html', context)
 
 
+# filename views.py
 def delete_client(request):
     """
     Удаление пользователей
@@ -42,6 +44,7 @@ def delete_client(request):
     return render(request, 'delete_client.html')
 
 
+# filename views.py
 def update_client(request, license_plate):
     """
     Редактирование Пользователей
@@ -63,6 +66,7 @@ def update_client(request, license_plate):
 
 
 # ORDER
+# filename views.py
 def create_order(request):
     """
     Создание заказа, сделки
@@ -79,6 +83,7 @@ def create_order(request):
     return render(request, 'create_order.html', {'form': form})
 
 
+# filename views.py
 def delete_order(request, order_id):
     """
     Удаление заказа/сделки
@@ -101,6 +106,7 @@ def delete_order(request, order_id):
     return render(request, 'delete_order.html', {'order': order})
 
 
+# filename views.py
 def update_order(request, order_id):
     """
     Редактирование заказа/сделки

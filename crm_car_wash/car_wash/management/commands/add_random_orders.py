@@ -1,3 +1,4 @@
+# filename add_random_orders.py
 
 from django.core.management.base import BaseCommand
 from car_wash.models import Order, Client
