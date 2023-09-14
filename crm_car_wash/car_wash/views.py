@@ -1,3 +1,4 @@
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Client, Order
 from .forms import ClientForm, ClientUpdateForm, OrderForm
@@ -128,6 +129,8 @@ def order_list(request):
     """
     orders = Order.objects.all()
     return render(request, 'order_list.html', {'orders': orders})
+
+
 """
 Здесь мы определяем функции для каждой операции: create_order, delete_order, update_order и order_list.
 - create_order: Создает новый заказ. Если запрос методом POST, то создается экземпляр формы (OrderForm) с данными из запроса и, если форма действительна, то сохраняется новый заказ в базу данных и происходит перенаправление на страницу списка заказов.
@@ -137,3 +140,13 @@ def order_list(request):
 Наконец, нужно создать соответствующие HTML-шаблоны для каждой из этих функций: create_order.html, delete_order.html, update_order.html и order_list.html, чтобы отображать формы и список заказов.
 Также понадобится обновить файл urls.py, чтобы добавить соответствующие маршруты для этих функций.
 """
+
+
+def page_not_found(reqwest, exception):
+    """
+    Функция предоставления несуществующей страницы
+    :param reqwest:
+    :param exception:
+    :return:
+    """
+    return HttpResponseNotFound('<h1>Страница не найдена</h1>')

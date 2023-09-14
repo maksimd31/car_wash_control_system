@@ -17,8 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from car_wash.views import page_not_found
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('car_wash.urls')),
 
 ]
+
+# hendler404 = page_not_found
+handler400 = 'your_app.views.handle_bad_request'
+handler403 = 'your_app.views.handle_forbidden'
+handler404 = 'your_app.views.handle_not_found'
+handler500 = 'your_app.views.handle_server_error'
