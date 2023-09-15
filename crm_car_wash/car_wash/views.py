@@ -1,7 +1,7 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Client, Order
-from .forms import ClientForm, ClientUpdateForm, OrderForm
+from .models import Client, Order, Employee
+from .forms import ClientForm, ClientUpdateForm, OrderForm, EmployeeForm
 
 
 # CLIENT
@@ -156,3 +156,68 @@ def page_not_found(reqwest, exception):
     :return:
     """
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
+
+
+# employee
+# filename views.py
+def add_employee(request):
+    """
+    Создание сотрудника
+    :param request: ответ на запрос GET или POST
+    :return: render 'add_employee.html' или перенаправление на страницу со списком сотрудников
+    """
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_list')  # Перенаправление на страницу со списком сотрудников
+    else:
+        form = EmployeeForm()
+
+    context = {'form': form}
+    return render(request, 'add_employee.html', context)
+
+
+def employee_list(request):
+    """
+    Отображение списка сотрудников
+    :param request: ответ на запрос GET
+    :return: render 'employee_list.html' с контекстом, содержащим список сотрудников
+    """
+    employees = Employee.objects.all()
+    context = {'employees': employees}
+    return render(request, 'employee_list.html', context)
+
+
+def delete_employee(request, employee_id):
+    employee = Employee.objects.get(id=employee_id)
+
+    if request.method == 'POST':
+        employee.delete()
+        return redirect('employee_list')
+
+    return render(request, 'delete_employee.html', {'employee': employee})
+
+
+# # filename views.py
+# def employee_list_del(request):
+#     employees = Employee.objects.all()
+#     return render(request, 'employee_list.html', {'employees': employees})
+
+# # filename views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Employee
+from .forms import EmployeeForm
+
+
+def edit_employee(request, employee_id):
+    employee = get_object_or_404(Employee, id=employee_id)
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST, instance=employee)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_list')
+    else:
+        form = EmployeeForm(instance=employee)
+
+    return render(request, 'edit_employee.html', {'form': form})

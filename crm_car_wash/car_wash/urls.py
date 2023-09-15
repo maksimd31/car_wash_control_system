@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .views import delete_employee, edit_employee
 
 # from .views import create_new_client
 
@@ -15,5 +16,8 @@ urlpatterns = [
     path('order/<int:order_id>/delete/', views.delete_order, name='delete_order'),
     path('order/<int:order_id>/update/', views.update_order, name='update_order'),
     path('order/list/', views.order_list, name='order_list'),
+    path('delete_employee/<int:employee_id>/', delete_employee, name='delete_employee'),
+    path('employee/<int:employee_id>/edit/', edit_employee, name='edit_employee'),
+
     # path('result/', result_page, name='result_page'),
 ]
