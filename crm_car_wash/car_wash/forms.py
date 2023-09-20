@@ -29,6 +29,5 @@ class OrderForm(forms.ModelForm):
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ('first_name', 'last_name', 'position', 'department')
-
-
+        fields = ('full_name', 'position', 'employment_date', 'phone_number', 'registration_address',
+                  'residential_address')
