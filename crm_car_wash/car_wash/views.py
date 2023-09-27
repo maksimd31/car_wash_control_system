@@ -205,9 +205,9 @@ def delete_employee(request, employee_id):
 #     return render(request, 'employee_list.html', {'employees': employees})
 
 # # filename views.py
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Employee
-from .forms import EmployeeForm
+# from django.shortcuts import render, get_object_or_404, redirect
+# from .models import Employee
+# from .forms import EmployeeForm
 
 
 def edit_employee(request, employee_id):
@@ -221,3 +221,11 @@ def edit_employee(request, employee_id):
         form = EmployeeForm(instance=employee)
 
     return render(request, 'edit_employee.html', {'form': form})
+
+
+def base(reqwest):
+    return render(reqwest, 'base.html')
+
+
+def index(reqwest):
+    return render(reqwest, 'index.html')

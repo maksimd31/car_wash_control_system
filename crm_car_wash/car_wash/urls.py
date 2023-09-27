@@ -10,10 +10,10 @@ app_name = 'client'
 
 urlpatterns = [
     # path('create/', create_new_client, name='create_new_client'),
-    path('', views.add_client, name='add_client'),
+    path('', views.index, name='index'),
     path('add_client', views.add_client, name='add_client'),
     # path('/add_client/', views.add_client, name='add_client'),
-    path('/delete/', views.delete_client, name='delete_client'),
+    path('delete', views.delete_client, name='delete_client'),
     path('client/<str:license_plate>/update/', views.update_client, name='update_client'),
     path('order/create/', views.create_order, name='create_order'),
     path('order/<int:order_id>/delete/', views.delete_order, name='delete_order'),
