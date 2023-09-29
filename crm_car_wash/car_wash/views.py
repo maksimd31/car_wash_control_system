@@ -229,3 +229,7 @@ def base(reqwest):
 
 def index(reqwest):
     return render(reqwest, 'index.html')
+
+
+def testJs(reqwest):
+    return render(reqwest, 'testJs.html')

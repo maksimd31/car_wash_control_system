@@ -6,12 +6,13 @@ from car_wash import views
 
 # from .views import create_new_client
 
-app_name = 'client'
+# app_name = 'client'
 
 urlpatterns = [
     # path('create/', create_new_client, name='create_new_client'),
     path('', views.index, name='index'),
     path('add_client', views.add_client, name='add_client'),
+    path('test', views.testJs, name='testJs'),
     # path('/add_client/', views.add_client, name='add_client'),
     path('delete', views.delete_client, name='delete_client'),
     path('client/<str:license_plate>/update/', views.update_client, name='update_client'),
