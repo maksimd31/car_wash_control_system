@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'car_wash'
+    'car_wash',
+    'website',
 ]
 
 MIDDLEWARE = [
@@ -71,10 +72,22 @@ WSGI_APPLICATION = 'crm_car_wash.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+# """ д/б для car_wash"""
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
+    # Б/Д для website
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dataMysql',
+        'USER': 'root',
+        'PASSWORD': '1234qwer',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
